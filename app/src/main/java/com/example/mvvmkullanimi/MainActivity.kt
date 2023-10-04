@@ -2,32 +2,28 @@ package com.example.mvvmkullanimi
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import com.example.mvvmkullanimi.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    private val viewModel : MainActivityViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.mainActivityNesnesi = this
 
-        binding.hesaplamaSonucu = "0"
+        viewModel.islemSonuc.observe(this){
+            binding.hesaplamaSonucu = it
+        }
 
     }
 
     fun buttonToplamaTikla(alinanSayi1 : String, alinanSayi2 : String){
-        val sayi1 = alinanSayi1.toInt()
-        val sayi2 = alinanSayi2.toInt()
-        val toplam = sayi1 + sayi2
-
-        binding.hesaplamaSonucu = toplam.toString()
+        viewModel.toplamaYap(alinanSayi1,alinanSayi2)
     }
     fun buttonCarpmaTikla(alinanSayi1 : String, alinanSayi2 : String){
-        val sayi1 = alinanSayi1.toInt()
-        val sayi2 = alinanSayi2.toInt()
-        val carpma = sayi1 * sayi2
-
-        binding.hesaplamaSonucu = carpma.toString()
+        viewModel.carpmaYap(alinanSayi1, alinanSayi2)
     }
 }
